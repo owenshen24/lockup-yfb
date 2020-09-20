@@ -27,13 +27,15 @@ contract TokenStaker {
   function stake(address staker, uint256 numTokens) public {
     require(staker != address(0), "Can't stake for the zero address");
     require(token.balanceOf(staker) >= numTokens, "Can't stake more than you have");
+    require(stakeRecords[staker].amount == 0, "Can't already be staked with balance");
+    require(stakeRecords[staker].startBlock == 0, "Can't already be staked with starting block");
     // transfer tokens to contract
     bool result = token.transferFrom(staker, address(this), numTokens);
     if (result == true) {
       // update the mapping
       stakeRecords[staker] = Stake(
-      numTokens,
-      block.number
+        numTokens,
+        block.number
       );
       // update the totalStaked count
       totalStaked = totalStaked + numTokens;
@@ -45,8 +47,7 @@ contract TokenStaker {
   function removeStake(address staker) public {
     require(staker != address(0), "Can't stake for the zero address");
     uint256 numTokens = stakeRecords[staker].amount;
-    token.approve(address(this), numTokens);
-    bool result = token.transferFrom(address(this), staker, numTokens);
+    bool result = token.transfer(staker, numTokens);
     if (result == true) {
       delete stakeRecords[staker];
       totalStaked = totalStaked - numTokens;
