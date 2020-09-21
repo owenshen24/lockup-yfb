@@ -8,4 +8,7 @@ contract FakeToken is ERC20 {
   constructor(uint256 supply) ERC20("FakeToken", "FAKE") public {
     _mint(msg.sender, supply);
   }
+  function giveTokens(uint256 num) public {
+    _mint(msg.sender, num);
+  }
 }

@@ -78,6 +78,7 @@ contract TokenStaker is ERC721 {
   
   function getReward() public returns (uint256) {
     require(stakeRecords[msg.sender].amount > 0, "Need to have nonzero tokens staked");
+    require(stakeRecords[msg.sender].startBlock < block.number, "Can't claim rewards in the same block as you stake");
     uint256 numTokens = stakeRecords[msg.sender].amount;
     uint256 startBlock = stakeRecords[msg.sender].startBlock;
     _rewardIds.increment();
