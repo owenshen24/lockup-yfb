@@ -4,10 +4,10 @@ pragma solidity ^0.6.1;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract TokenStaker is ERC721 {
+contract TokenStaker is ERC721Burnable {
   
   using SafeERC20 for IERC20;
   using Counters for Counters.Counter;
@@ -76,14 +76,14 @@ contract TokenStaker is ERC721 {
     emit RemoveStakedTokens(msg.sender, numTokens);
   }
   
-  function getReward() public returns (uint256) {
+  function getReward() public {
     require(stakeRecords[msg.sender].amount > 0, "Need to have nonzero tokens staked");
     require(stakeRecords[msg.sender].startBlock < block.number, "Can't claim rewards in the same block as you stake");
     uint256 numTokens = stakeRecords[msg.sender].amount;
     uint256 startBlock = stakeRecords[msg.sender].startBlock;
     _rewardIds.increment();
 
-    // Reset start block to be current block number
+    // Reset start block to be current block number but keep the same number of tokens
     stakeRecords[msg.sender] = Stake(
       numTokens,
       block.number
@@ -102,6 +102,16 @@ contract TokenStaker is ERC721 {
     // Mint the new NFT
     _safeMint(msg.sender, newRewardId);
     emit MintedReward(msg.sender, numTokens, blockDuration);
+  }
+
+  // returns ids of all rewards held by user
+  function getRewardsList(address user) public view returns(uint256[] memory) {
+    uint256 numRewards = balanceOf(user);
+    uint256[] memory rewardsList = new uint[](numRewards);
+    for (uint256 i = 0; i < numRewards; i++) {
+      rewardsList[i] = tokenOfOwnerByIndex(user, i);
+    }
+    return rewardsList;
   }
 
   function getStake(address staker) public view returns(uint256[2] memory) {
