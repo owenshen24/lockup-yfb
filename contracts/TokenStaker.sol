@@ -20,17 +20,20 @@ contract TokenStaker is ERC721 {
   }
 
   struct Reward {
+    address owner;
     uint256 amount;
     uint256 blockDuration;
   }
 
+  IERC20 public token;
+
   mapping(address => Stake) public stakeRecords;
   mapping(uint256 => Reward) public rewardRecords;
   uint256 public totalStaked;
-  IERC20 public token;
 
   event AddStakedTokens(address user, uint256 amount);
   event RemoveStakedTokens(address user, uint256 amount);
+  event MintedReward(address user, uint256 amount, uint256 duration);
 
   constructor(address tokenAddress, string memory name, string memory symbol) ERC721(name, symbol) public {
     token = IERC20(tokenAddress);
@@ -87,14 +90,17 @@ contract TokenStaker is ERC721 {
 
     // Get new reward id
     uint256 newRewardId = _rewardIds.current();
+    // Set the new NFT's data
     uint256 blockDuration = block.number-startBlock;
     rewardRecords[newRewardId] = Reward(
+      msg.sender,
       numTokens,
       blockDuration
     );
 
     // Mint the new NFT
     _safeMint(msg.sender, newRewardId);
+    emit MintedReward(msg.sender, numTokens, blockDuration);
   }
 
   function getStake(address staker) public view returns(uint256[2] memory) {
