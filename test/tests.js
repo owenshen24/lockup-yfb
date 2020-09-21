@@ -15,7 +15,7 @@ contract("FakeToken tests", async accounts => {
     let b1 = await instance.balanceOf.call(accounts[1]);
     assert.equal(b0.toNumber(), 80);
     assert.equal(b1.toNumber(), 20);
-  })
+  });
 });
 
 contract("TokenStaker tests", async accounts => {
@@ -26,7 +26,7 @@ contract("TokenStaker tests", async accounts => {
 
     // staking should change state correctly
     await tokenInst.approve(stakerInst.address, 10);
-    await stakerInst.stake(accounts[0], 10);
+    await stakerInst.stake(10, {from: accounts[0]});
     let b0 = await tokenInst.balanceOf.call(accounts[0]);
     assert.equal(b0.toNumber(), 90);
     let stake0 = await stakerInst.getStake(accounts[0]);
@@ -34,7 +34,7 @@ contract("TokenStaker tests", async accounts => {
     let totalStaked = await stakerInst.totalStaked.call();
     assert.equal(totalStaked.toNumber(), 10);
 
-    await stakerInst.removeStake(accounts[0]);
+    await stakerInst.removeStake({from: accounts[0]});
 
     // unstaking should revert to original state
     b0 = await tokenInst.balanceOf.call(accounts[0]);
@@ -53,12 +53,36 @@ contract("TokenStaker tests 2", async accounts => {
     await tokenInst.approve(stakerInst.address, 10);
     // Can't overstake
     await truffleAssert.reverts(
-      stakerInst.stake(accounts[0], 100)
+      stakerInst.stake(100, {from: accounts[0]})
     );
-    await stakerInst.stake(accounts[0], 1);
+    await stakerInst.stake(1, {from: accounts[0]});
     // Can't double stake
     await truffleAssert.reverts(
-      stakerInst.stake(accounts[0], 1)
+      stakerInst.stake(1, {from: accounts[0]})
     );
+  });
+});
+
+contract("TokenStaker tests 3", async accounts => {
+
+  it ("allows minting of the NFT", async() => {
+    let tokenInst = await FakeToken.deployed();
+    let stakerInst = await TokenStaker.deployed();
+
+    await tokenInst.approve(stakerInst.address, 10);
+    await stakerInst.stake(10, {from: accounts[0]});
+    let s0 = await stakerInst.stakeRecords.call(accounts[0]);
+
+    await stakerInst.getReward({from: accounts[0]});
+    let nft0 = await stakerInst.balanceOf.call(accounts[0]);
+    assert.equal(nft0, 1);
+    let a0 = await stakerInst.ownerOf.call(1);
+    assert.equal(a0, accounts[0]);
+    let nftAmt0 = await stakerInst.rewardRecords.call(1);
+    assert.equal(nftAmt0["amount"].toNumber(), 10);
+
+    let s1 = await stakerInst.stakeRecords.call(accounts[0]);
+
+    assert(s1["startBlock"].toNumber() > s0["startBlock"].toNumber());
   });
 });
