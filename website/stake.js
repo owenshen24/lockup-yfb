@@ -179,7 +179,6 @@ function showStakedAmt() {
     $("#staked-num").text(web3.utils.fromWei(arr[0], "ether"));
     // allow 
     if (web3.utils.toBN(arr[0]) == 0) {
-      $("#stake").attr("disabled", "disabled");
       $("#stake-amount-holder").show();
     }
   });
