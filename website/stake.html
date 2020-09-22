@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer
+          src="https://code.jquery.com/jquery-3.5.1.min.js"
+          crossorigin="anonymous"></script>
+    <script defer type="text/javascript" src="web3.min.js"></script>
+    <script defer type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script defer type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script defer type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script defer type="text/javascript" src="stake.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>YFλ</title>
+  </head>
+  <body>
+    <div id="header">
+      <div id="logo">
+        <img src="logo.svg">
+      </div>
+      <div id="navbar">
+        <div>
+          <a href="./index.html">Home</a>
+          <a href="./stake.html">Stake</a>
+          <a href="./gems.html">Gems</a>
+          <a href="./faq.html">FAQ</a>
+        </div>
+      </div>
+      <div id="wallet-holder">
+        <div>
+          <button id="connect-wallet">Connect Wallet</button>
+        </div>
+      </div>
+    </div>
+  
+    <div id="container">
+      <div id="stake-holder">
+        <div class="card left-card">
+          <h1>Growing</h1>
+          <div id="gem-outer-holder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" id="gem-holder">
+              <defs/>
+              <rect id="gem" width="0" height="0" x="0" y="0" fill="#dc3c3c" rx="0" ry="0"/>
+            </svg>
+          </div>
+          <div class="gem-attributes">
+            Color: <span id="color"></span>
+          </div>
+          <div class="gem-attributes">
+            Size: <span id="size"></span>
+          </div>
+          <button id="mine">Mine Gem</button>          
+        </div>
+        <div class="card right-card">
+          <h1>Staking</h1>
+          <div id="rupee-holder">
+            <div>
+              <img id="rupee" src="./rupee-static.png"
+              onmouseover="this.src='./rupee.gif'"
+              onmouseout="this.src='./rupee-static.png'"
+            >
+            </div>
+            <div id="staked-num">...</div>
+            <div>yfβ staked</div>
+          </div>
+          <div id="stake-amount-holder">
+            <input type="text" id="stake-amount">
+          </div>
+          <button id="approve">Approve</button>
+          <button id="stake" disabled>Stake</button>
+          <button id="withdraw">Withdraw All</button>
+          <div id="available-holder">
+            Available:
+            <span id="available">...</span>
+            yfβ
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </body>
+</html>

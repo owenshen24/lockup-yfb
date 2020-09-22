@@ -1,0 +1,246 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(15, 31, 36);
+}
+
+button:disabled {
+  background-color: inherit;
+  cursor: inherit;
+}
+
+#header {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#header div {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+#logo {
+  margin-right: auto;
+  width: 10rem;
+}
+#logo img {
+  width: 3rem;
+  height: auto;
+  padding-left: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+#navbar {
+  min-width: 20rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+}
+
+#navbar a {
+  text-decoration: none;
+  margin: auto;
+  background-color: rgb(14, 72, 92);
+  color: rgb(235, 235, 235);;
+  border-radius: 7%;
+  padding: 0.5rem 0.5rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  /* border: 1px solid rgb(93, 184, 214); */
+  font-weight: bold;
+}
+#navbar a:hover {
+  background-color:rgb(51, 132, 160);
+}
+
+#wallet-holder {
+  margin-left: auto;
+}
+
+#connect-wallet {
+  background-color: rgb(0, 0, 0);
+  color: rgb(235, 235, 235);
+  border-radius: 3%;
+  padding: 0.5rem 0.5rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  outline: none;
+  border: 2px solid rgb(64, 145, 172);
+  font-weight: bold;
+}
+#connect-wallet:hover {
+  background-color: rgb(14, 72, 92);
+}
+
+#container {
+  padding-top: 1rem;
+  max-width: 60rem;
+  margin: auto;
+}
+
+#staked {
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+  display: grid;
+  grid-template-rows: 1fr;
+}
+#staked div {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#num-staked {
+  font-size: 10rem;
+}
+
+#stake-holder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2rem;
+  color:  rgb(255, 255, 255);
+}
+#rupee {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+}
+#rupee-holder {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+#staked-num {
+  font-size: 3rem;
+}
+.card {
+  background-color: rgb(10, 53, 68);;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  border: 1px solid rgb(44, 126, 153);
+}
+#stake-amount-holder {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  display: none;
+}
+#stake-amount {
+  width: 10rem;
+}
+#approve {
+  display: none;
+}
+#approve, #stake, #withdraw, #mine {
+  width: 9rem;
+  background-color: rgb(6, 44, 56);
+  color: rgb(235, 235, 235);
+  border-radius: 7%;
+  padding: 0.5rem 0.5rem;
+  font-size: 1.15rem;
+  cursor: pointer;
+  font-weight: bold;
+  border: 2px solid rgb(51, 132, 160);
+}
+#approve:hover, #stake:hover, #withdraw:hover, #mine:hover {
+  background-color: black;
+}
+
+#available-holder {
+  margin-top: 0.5rem;
+  color: rgb(115, 198, 226);
+  cursor: pointer;
+}
+
+#gem-holder {
+  -webkit-animation:spin 10s linear infinite;
+  -moz-animation:spin 10s linear infinite;
+  animation:spin 10s linear infinite;
+  width: 10rem;
+  padding: 2rem 2rem;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+#gem-outer-holder {
+  margin-bottom: 4rem;
+}
+
+.gem-attributes {
+  margin-bottom: 0.25rem;
+}
+
+#mine {
+  margin-top: 0.5rem;
+}
+
+#gem-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 2rem;
+}
+
+.displayed-gem {
+  margin: auto;
+}
+
+ /* Tooltip container */
+ .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  font-weight: bold;
+  visibility: hidden;
+  width: 10rem;
+  background-color: rgb(0, 0, 0);
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: -150%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 1rem;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+} 
+
+#faq {
+  color: white !important;
+  font-size: 1.5rem;
+  font-weight: bold;
+}

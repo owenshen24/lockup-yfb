@@ -2,4 +2,3 @@ truffle-config.js
 node_modules/
 log.txt
 build/
-website/

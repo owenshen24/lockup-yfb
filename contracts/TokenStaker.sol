@@ -65,13 +65,29 @@ contract TokenStaker is ERC721Burnable {
     require(stakeRecords[msg.sender].startBlock > 0, "Need to have nonzero start nlock");
 
     uint256 numTokens = stakeRecords[msg.sender].amount;
+    uint256 startBlock = stakeRecords[msg.sender].startBlock;
     
-    // Remove the mapping
-    delete stakeRecords[msg.sender];
     // Reduce the totalStaked count
     totalStaked = totalStaked - numTokens;
 
-    // Transfer the tokens back
+    // Claim rewards one more time
+    // Get new reward id
+    uint256 newRewardId = _rewardIds.current();
+    // Set the new NFT's data
+    uint256 blockDuration = block.number-startBlock;
+    rewardRecords[newRewardId] = Reward(
+      msg.sender,
+      numTokens,
+      blockDuration
+    );
+    // Mint the new NFT
+    _safeMint(msg.sender, newRewardId);
+    emit MintedReward(msg.sender, numTokens, blockDuration);
+    
+    // Remove the mapping
+    delete stakeRecords[msg.sender];
+
+    // Transfer the staked tokens back
     token.safeTransfer(msg.sender, numTokens);
     emit RemoveStakedTokens(msg.sender, numTokens);
   }
@@ -103,6 +119,7 @@ contract TokenStaker is ERC721Burnable {
     _safeMint(msg.sender, newRewardId);
     emit MintedReward(msg.sender, numTokens, blockDuration);
   }
+
 
   // returns ids of all rewards held by user
   function getRewardsList(address user) public view returns(uint256[] memory) {
