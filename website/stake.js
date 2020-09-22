@@ -137,22 +137,22 @@ async function initApp() {
   });
 
   $("#stake").click(async function() {
-    let stakeAmt = $("#stake-amount").val();
-    let stakeAmtBN =  web3.utils.toWei(stakeAmt, 'ether');
-    staker.methods.stake(stakeAmtBN).send({from:account})
-      .on('transactionHash', function(hash){
-        $("stake").prop("disabled", true);
-        console.log(hash);
-      })
-      .on('confirmation', function(confirmationNumber, receipt){
-        console.log("confirmed!");
-        showStakedAmt();
-        showTokenAmt();
-        $("#stake-amount-holder").hide();
-      })
-      .on('error', function(error){
-        console.log(error);
-      });
+    // let stakeAmt = $("#stake-amount").val();
+    // let stakeAmtBN =  web3.utils.toWei(stakeAmt, 'ether');
+    // staker.methods.stake(stakeAmtBN).send({from:account})
+    //   .on('transactionHash', function(hash){
+    //     $("stake").prop("disabled", true);
+    //     console.log(hash);
+    //   })
+    //   .on('confirmation', function(confirmationNumber, receipt){
+    //     console.log("confirmed!");
+    //     showStakedAmt();
+    //     showTokenAmt();
+    //     $("#stake-amount-holder").hide();
+    //   })
+    //   .on('error', function(error){
+    //     console.log(error);
+    //   });
     });
 
   $("#withdraw").click(async function() {
