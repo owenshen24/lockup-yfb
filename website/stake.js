@@ -24,8 +24,8 @@ const abiERC20 = [
         "type":"function"
     }
 ];
-const tokenAddr = "0x89ee58af4871b474c30001982c3d7439c933c838";
-const stakerAddr = "0xaC6dcFF6E13132f075e36cA3a7F403236f869438";
+const tokenAddr = "0x57236d2f34df352a8b7c358e17e6f1040df1cae8";
+const stakerAddr = "0xc1c12ef86471140e2158a645b218c322261acd4c";
 let web3Modal, provider, account;
 
 $(document).ready(async function() {
@@ -137,22 +137,22 @@ async function initApp() {
   });
 
   $("#stake").click(async function() {
-    // let stakeAmt = $("#stake-amount").val();
-    // let stakeAmtBN =  web3.utils.toWei(stakeAmt, 'ether');
-    // staker.methods.stake(stakeAmtBN).send({from:account})
-    //   .on('transactionHash', function(hash){
-    //     $("stake").prop("disabled", true);
-    //     console.log(hash);
-    //   })
-    //   .on('confirmation', function(confirmationNumber, receipt){
-    //     console.log("confirmed!");
-    //     showStakedAmt();
-    //     showTokenAmt();
-    //     $("#stake-amount-holder").hide();
-    //   })
-    //   .on('error', function(error){
-    //     console.log(error);
-    //   });
+    let stakeAmt = $("#stake-amount").val();
+    let stakeAmtBN =  web3.utils.toWei(stakeAmt, 'ether');
+    staker.methods.stake(stakeAmtBN).send({from:account})
+      .on('transactionHash', function(hash){
+        $("stake").prop("disabled", true);
+        console.log(hash);
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+        console.log("confirmed!");
+        showStakedAmt();
+        showTokenAmt();
+        $("#stake-amount-holder").hide();
+      })
+      .on('error', function(error){
+        console.log(error);
+      });
     });
 
   $("#withdraw").click(async function() {
@@ -172,6 +172,8 @@ async function initApp() {
     });
   });
 }
+
+// add get rewards button
 
 function showStakedAmt() {
   staker.methods.getStake(account).call({from:account}).then(function(arr) {

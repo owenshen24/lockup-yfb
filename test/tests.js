@@ -84,5 +84,8 @@ contract("TokenStaker tests 3", async accounts => {
     let s1 = await stakerInst.stakeRecords.call(accounts[0]);
 
     assert(s1["startBlock"].toNumber() > s0["startBlock"].toNumber());
+
+    // second claiming of the NFT
+    await stakerInst.getReward({from: accounts[0]});
   });
 });

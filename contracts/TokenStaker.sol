@@ -65,24 +65,9 @@ contract TokenStaker is ERC721Burnable {
     require(stakeRecords[msg.sender].startBlock > 0, "Need to have nonzero start nlock");
 
     uint256 numTokens = stakeRecords[msg.sender].amount;
-    uint256 startBlock = stakeRecords[msg.sender].startBlock;
     
     // Reduce the totalStaked count
     totalStaked = totalStaked - numTokens;
-
-    // Claim rewards one more time
-    // Get new reward id
-    uint256 newRewardId = _rewardIds.current();
-    // Set the new NFT's data
-    uint256 blockDuration = block.number-startBlock;
-    rewardRecords[newRewardId] = Reward(
-      msg.sender,
-      numTokens,
-      blockDuration
-    );
-    // Mint the new NFT
-    _safeMint(msg.sender, newRewardId);
-    emit MintedReward(msg.sender, numTokens, blockDuration);
     
     // Remove the mapping
     delete stakeRecords[msg.sender];
@@ -97,7 +82,6 @@ contract TokenStaker is ERC721Burnable {
     require(stakeRecords[msg.sender].startBlock < block.number, "Can't claim rewards in the same block as you stake");
     uint256 numTokens = stakeRecords[msg.sender].amount;
     uint256 startBlock = stakeRecords[msg.sender].startBlock;
-    _rewardIds.increment();
 
     // Reset start block to be current block number but keep the same number of tokens
     stakeRecords[msg.sender] = Stake(
@@ -106,7 +90,9 @@ contract TokenStaker is ERC721Burnable {
     );
 
     // Get new reward id
+    _rewardIds.increment();
     uint256 newRewardId = _rewardIds.current();
+
     // Set the new NFT's data
     uint256 blockDuration = block.number-startBlock;
     rewardRecords[newRewardId] = Reward(
