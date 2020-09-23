@@ -1,31 +1,7 @@
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const Fortmatic = window.Fortmatic;
-const abiERC20 = [
-    {
-        "constant":true,
-        "inputs":[{"name":"_owner","type":"address"}],
-        "name":"balanceOf",
-        "outputs":[{"name":"balance","type":"uint256"}],
-        "type":"function"
-    },
-    {
-        "constant":true,
-        "inputs":[{"name":"_owner","type":"address"}, {"name":"_spender","type":"address"}],
-        "name":"allowance",
-        "outputs":[{"name":"remaining","type":"uint256"}],
-        "type":"function"
-    },
-    {
-        "constant":true,
-        "inputs":[{"name":"_spender","type":"address"}, {"name":"_value","type":"uint256"}],
-        "name":"approve",
-        "outputs":[],
-        "type":"function"
-    }
-];
-const tokenAddr = "0x57236d2f34df352a8b7c358e17e6f1040df1cae8";
-const stakerAddr = "0xc1c12ef86471140e2158a645b218c322261acd4c";
+
 let web3Modal, provider, account;
 
 $(document).ready(async function() {
@@ -93,10 +69,13 @@ async function connectWallet() {
 async function initApp() {
   let stakerJSON = await $.getJSON("./TokenStaker.json");
   staker = await new web3.eth.Contract(stakerJSON["abi"], stakerAddr);
-  token = await new web3.eth.Contract(abiERC20, tokenAddr);
+
+  let tokenJSON = await $.getJSON("./FakeToken.json")
+  token = await new web3.eth.Contract(tokenJSON["abi"], tokenAddr);
 
   showTokenAmt();
   showGem();
+  showStakedAmt();
 
   token.methods.allowance(account, stakerAddr).call({from:account}).then(function(r) {
     console.log("allowance: ", r);
@@ -130,10 +109,40 @@ async function initApp() {
     }
   });
 
-  showStakedAmt();
-
   $("#available-holder").click(function() {
     $("#stake-amount").val($("#available").text());
+  });
+
+  // TEST FUNCTION
+  $("#get").click(async function() {
+    let getAmt = $("#get-amount").val();
+    let getAmtBN =  web3.utils.toWei(getAmt, 'ether');
+    token.methods.giveTokens(getAmtBN).send({from: account})
+      .on('transactionHash', function(hash){
+        $("stake").prop("disabled", true);
+        console.log(hash);
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+        console.log("confirmed!");
+        showTokenAmt();
+      })
+      .on('error', function(error){
+        console.log(error);
+      });
+  })
+
+  $("#mine").click(async function() {
+    staker.methods.getReward().send({from: account})
+      .on('transactionHash', function(hash){
+        console.log(hash);
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+        console.log("confirmed!");
+        showGem();
+      })
+      .on('error', function(error){
+        console.log(error);
+    });
   });
 
   $("#stake").click(async function() {
@@ -148,6 +157,7 @@ async function initApp() {
         console.log("confirmed!");
         showStakedAmt();
         showTokenAmt();
+        showGem();
         $("#stake-amount-holder").hide();
       })
       .on('error', function(error){

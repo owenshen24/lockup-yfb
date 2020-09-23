@@ -10,6 +10,7 @@
     <script defer type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
     <script defer type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
     <script defer type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script defer type="text/javascript" src="constants.js"></script>
     <script defer type="text/javascript" src="stake.js"></script>
     <link rel="stylesheet" href="styles.css">
     <title>YFλ</title>
@@ -34,6 +35,11 @@
       </div>
     </div>
   
+    <div id="get-holder">
+      <input type="text" id="get-amount">
+      <button id="get">GET FAKE YFB</button>
+    </div>
+
     <div id="container">
       <div id="stake-holder">
         <div class="card left-card">
@@ -68,7 +74,7 @@
             <input type="text" id="stake-amount">
           </div>
           <button id="approve">Approve</button>
-          <button id="stake" disabled>Stake</button>
+          <button id="stake">Stake</button>
           <button id="withdraw">Withdraw All</button>
           <div id="available-holder">
             Available:

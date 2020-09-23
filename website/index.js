@@ -1,31 +1,7 @@
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const Fortmatic = window.Fortmatic;
-const abiERC20 = [
-    {
-        "constant":true,
-        "inputs":[{"name":"_owner","type":"address"}],
-        "name":"balanceOf",
-        "outputs":[{"name":"balance","type":"uint256"}],
-        "type":"function"
-    },
-    {
-        "constant":true,
-        "inputs":[{"name":"_owner","type":"address"}, {"name":"_spender","type":"address"}],
-        "name":"allowance",
-        "outputs":[{"name":"remaining","type":"uint256"}],
-        "type":"function"
-    },
-    {
-        "constant":true,
-        "inputs":[{"name":"_spender","type":"address"}, {"name":"_value","type":"uint256"}],
-        "name":"approve",
-        "outputs":[],
-        "type":"function"
-    }
-];
-const tokenAddr = "0x89ee58af4871b474c30001982c3d7439c933c838";
-const stakerAddr = "0xaC6dcFF6E13132f075e36cA3a7F403236f869438";
+
 let web3Modal, provider, account;
 
 $(document).ready(async function() {
