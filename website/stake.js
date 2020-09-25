@@ -171,6 +171,20 @@ async function initApp() {
       console.log(error);
     });
   });
+
+  $("#mine").click(async function() {
+    staker.methods.getReward().send({from: account})
+      .on('transactionHash', function(hash){
+        console.log(hash);
+      })
+      .on('confirmation', function(confirmationNumber, receipt){
+        console.log("confirmed!");
+        showGem();
+      })
+      .on('error', function(error){
+        console.log(error);
+    });
+  });
 }
 
 function showStakedAmt() {
